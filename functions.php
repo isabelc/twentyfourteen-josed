@@ -329,10 +329,9 @@ function twentyfourteen_the_attached_image() {
 			$next_attachment_url = get_attachment_link( array_shift( $attachment_ids ) );
 		}
 	}
-
 	printf( '<a href="%1$s" rel="attachment">%2$s</a>',
 		esc_url( $next_attachment_url ),
-		wp_get_attachment_image( $post->ID, $attachment_size )
+		wp_get_attachment_image( $post->ID, $attachment_size, 0, array('title' => the_title_attribute('echo=0')))
 	);
 }
 endif;
@@ -371,9 +370,9 @@ function twentyfourteen_list_authors() {
 				<a class="button contributor-posts-link" href="<?php echo esc_url( get_author_posts_url( $contributor_id ) ); ?>">
 					<?php printf( _n( '%d Article', '%d Articles', $post_count, 'twentyfourteen' ), $post_count ); ?>
 				</a>
-			</div><!-- .contributor-summary -->
-		</div><!-- .contributor-info -->
-	</div><!-- .contributor -->
+			</div>
+		</div>
+	</div>
 
 	<?php
 	endforeach;

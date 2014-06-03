@@ -9,7 +9,6 @@
 
 // Retrieve attachment metadata.
 $metadata = wp_get_attachment_metadata();
-
 get_header();
 ?>
 
@@ -70,10 +69,6 @@ get_header();
 			<?php comments_template(); ?>
 
 		<?php endwhile; // end of the loop. ?>
-
-		</div><!-- #content -->
-	</section><!-- #primary -->
-
-<?php
+</div></section><?php
 get_sidebar();
 get_footer();
