@@ -331,7 +331,9 @@ function twentyfourteen_the_attached_image() {
 	}
 	printf( '<a href="%1$s" rel="attachment">%2$s</a>',
 		esc_url( $next_attachment_url ),
-		wp_get_attachment_image( $post->ID, $attachment_size, 0, array('title' => the_title_attribute('echo=0')))
+// @test use filter instead		wp_get_attachment_image( $post->ID, $attachment_size, 0, array('title' => the_title_attribute('echo=0')))
+
+		wp_get_attachment_image( $post->ID, $attachment_size )
 	);
 }
 endif;
@@ -509,3 +511,9 @@ require get_template_directory() . '/inc/customizer.php';
 if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
 	require get_template_directory() . '/inc/featured-content.php';
 }
+/* add title attr to image attachments */
+function josed_add_img_title($attr) {
+	$attr['title'] = the_title_attribute('echo=0');
+	return $attr;
+}
+add_filter('wp_get_attachment_image_attributes','josed_add_img_title');

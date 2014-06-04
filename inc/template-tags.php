@@ -173,7 +173,6 @@ function twentyfourteen_post_thumbnail() {
 	
 	if ( is_singular() ) :
 	?>
-
 	<div class="post-thumbnail">
 	<?php
 		if ( ( ! is_active_sidebar( 'sidebar-2' ) || is_page_template( 'page-templates/full-width.php' ) ) ) {
