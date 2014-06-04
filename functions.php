@@ -235,11 +235,6 @@ function twentyfourteen_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
-
-	if ( is_singular() && wp_attachment_is_image() ) {
-		wp_enqueue_script( 'twentyfourteen-keyboard-image-navigation', get_template_directory_uri() . '/js/keyboard-image-navigation.js', array( 'jquery' ), '20130402' );
-	}
-
 	if ( is_active_sidebar( 'sidebar-3' ) ) {
 		wp_enqueue_script( 'jquery-masonry' );
 	}
@@ -576,6 +571,11 @@ function josed_meta_tags() {
 			$img_uri = esc_attr( $thumbnail_src[0] );
 		}
 		$perma = get_permalink();
+		
+		/** inline twentyfourteen-keyboard-image-navigation.js for image attachments. */
+		if ( is_singular() && wp_attachment_is_image() ) {
+			?><script>( function( $ ) {$( document ).on( 'keydown.twentyfourteen', function( e ) {var url = false;if ( e.which === 37 ) {url = $( '.previous-image a' ).attr( 'href' );} else if ( e.which === 39 ) {url = $( '.entry-attachment a' ).attr( 'href' );}if ( url && ( !$( 'textarea, input' ).is( ':focus' ) ) ) {window.location = url;}} );} )( jQuery );</script><?php
+		}
 	}
 	
 	if (is_singular() || is_front_page() ) { ?>
