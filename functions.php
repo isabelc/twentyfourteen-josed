@@ -331,8 +331,6 @@ function twentyfourteen_the_attached_image() {
 	}
 	printf( '<a href="%1$s" rel="attachment">%2$s</a>',
 		esc_url( $next_attachment_url ),
-// @test use filter instead		wp_get_attachment_image( $post->ID, $attachment_size, 0, array('title' => the_title_attribute('echo=0')))
-
 		wp_get_attachment_image( $post->ID, $attachment_size )
 	);
 }
@@ -538,3 +536,70 @@ function jose_remove_cssjs_ver( $src ) {
 }
 add_filter('style_loader_src', 'jose_remove_cssjs_ver', 10, 2);
 add_filter('script_loader_src','jose_remove_cssjs_ver', 10, 2);
+
+/* add meta tags to head: description and open graph */
+function josed_meta_tags() {
+
+	global $paged, $page;
+	$des = '';
+	$img_uri = '';
+	$ogtype = 'article';
+	$perma = site_url();
+	
+	if ( $paged >= 2 || $page >= 2 )
+		$des .= sprintf( __('Page %s - ', 'crucible'), max( $paged, $page ) );
+
+	if ( is_category() )
+		$des .= strip_tags(category_description());
+
+	if ( is_tag() )
+		$des .= strip_tags(tag_description());
+
+	if (is_front_page()) {
+		$des .= 'Jose D. Castillo is a Miami-born skater of New Skool Skate Team. This is his official Skateboarding blog documenting his skate life.';
+		$keys = 'Jose Castillo, skater, young skater, skateboarding, skate, Miami skater, skateboarder';
+		$ogtype = 'athlete';
+	}
+
+	// if singular get the excerpt and image
+	if ( is_singular() && $post_id = get_queried_object_id() ) {
+		if ( get_post_field( 'post_excerpt', $post_id ) ) {
+			$description = get_post_field( 'post_excerpt', $post_id );
+		} else {
+            $description = get_post_field( 'post_content', $post_id );
+		}
+		$description = trim( wp_strip_all_tags( $description, true ) );
+		$des .= substr( $description, 0, 150 );
+		$img_uri = wp_get_attachment_url();
+		if(has_post_thumbnail($post_id)){
+			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'full' );
+			$img_uri = esc_attr( $thumbnail_src[0] );
+		}
+		$perma = get_permalink();
+	}
+	
+	if (is_singular() || is_front_page() ) { ?>
+	
+		<meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?>" />
+		<meta property="og:url" content="<?php echo $perma; ?>" />
+		<meta property="og:site_name" content="Jose D. Castillo, born skater" />
+		<meta property="og:type" content="<?php echo $ogtype; ?>" />
+		<meta property="fb:admins" content="isabel.8991" />
+		<?php		
+		if ( $img_uri) { ?>
+			<meta property="og:image" content="<?php echo $img_uri; ?>"/>
+		<?php }
+	}
+	
+	if( !empty($des) ) {
+		?><meta name="description" content="<?php echo $des;?>" /><?php 
+	}
+	if( !empty($keys) ) {
+	?>
+		<meta name="keywords" content="<?php echo $keys;?>" />
+	<?php 
+	}
+	// Tell searchbots to not index pages 2+ of paged archives. Improves ranking.
+	if ( $paged >= 2 ) {echo '<meta name="robots" content="noindex, follow, noarchive" />';}
+}
+add_action('wp_head', 'josed_meta_tags');
