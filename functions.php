@@ -217,11 +217,7 @@ function twentyfourteen_font_url() {
 	return $font_url;
 }
 
-/**
- * Enqueue scripts and styles for the front end.
- *
- * @since Twenty Fourteen 1.0
- */
+/* Enqueue scripts and styles for the front end. */
 function twentyfourteen_scripts() {
 	// Add Lato font, used in the main stylesheet.
 	wp_enqueue_style( 'twentyfourteen-lato', twentyfourteen_font_url(), array(), null );
@@ -255,8 +251,12 @@ function twentyfourteen_scripts() {
 			'nextText' => __( 'Next', 'twentyfourteen' )
 		) );
 	}
-
 	wp_enqueue_script( 'twentyfourteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20140319', true );
+	/* Dequeue TubePress CSS and .js on all pages except the 1 video page. */
+	if ( ! is_page('videos') ){
+		wp_dequeue_style('tubepress');
+		wp_dequeue_script('tubepress');
+	}
 }
 add_action( 'wp_enqueue_scripts', 'twentyfourteen_scripts' );
 
@@ -517,3 +517,24 @@ function josed_add_img_title($attr) {
 	return $attr;
 }
 add_filter('wp_get_attachment_image_attributes','josed_add_img_title');
+/**
+* Dequeue jQuery migrate script in WordPress.
+*/
+function jose_remove_jquery_migrate( &$scripts) {
+    if(!is_admin()) {
+        $scripts->remove( 'jquery');
+        $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.0' );
+    }
+}
+add_filter( 'wp_default_scripts', 'jose_remove_jquery_migrate' );
+/**
+*  Remove query string from static files
+*/
+function jose_remove_cssjs_ver( $src ) {
+	if( strpos( $src, '?ver=' ) ) {
+		$src = remove_query_arg( 'ver', $src );
+	}
+	return $src;
+}
+add_filter('style_loader_src', 'jose_remove_cssjs_ver', 10, 2);
+add_filter('script_loader_src','jose_remove_cssjs_ver', 10, 2);
