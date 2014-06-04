@@ -1,26 +1,13 @@
 <?php
 /**
  * The Template for displaying all single posts
- *
- * @package WordPress
- * @subpackage Twenty_Fourteen
- * @since Twenty Fourteen 1.0
  */
-
-get_header(); ?>
-
-	<div id="primary" class="content-area">
-		<div id="content" class="site-content" role="main">
-			<?php
+get_header(); ?><div id="primary" class="content-area"><div id="content" class="site-content" role="main"><?php
 				// Start the Loop.
 				while ( have_posts() ) : the_post();
-
-					/*
-					 * Include the post format-specific template for the content. If you want to
-					 * use this in a child theme, then include a file called called content-___.php
-					 * (where ___ is the post format) and that will be used instead.
-					 */
 					get_template_part( 'content', get_post_format() );
+					
+					// social_share ?><div id="social-wrap"><a target="_blank" href="https://plus.google.com/share?url=<?php echo urlencode(get_permalink()); ?>" class="simple-share ss-gplus" title="Share on G+">G+ Share</a> <a target="_blank" href="https://twitter.com/share?text=<?php echo urlencode(get_the_title()); ?>&amp;hashtags=skater,skateboarding" class="simple-share ss-twitter" title="Tweet">Tweet</a> <a target="_blank" href="http://www.facebook.com/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" class="simple-share ss-facebook" title="Share on Facebook">Share</a></div><?php
 
 					// Previous/next post navigation.
 					twentyfourteen_post_nav();
@@ -30,11 +17,7 @@ get_header(); ?>
 						comments_template();
 					}
 				endwhile;
-			?>
-		</div><!-- #content -->
-	</div><!-- #primary -->
-
-<?php
+			?></div></div><?php
 get_sidebar( 'content' );
 get_sidebar();
 get_footer();
