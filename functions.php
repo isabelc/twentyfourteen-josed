@@ -231,10 +231,6 @@ function twentyfourteen_scripts() {
 	// Load the Internet Explorer specific stylesheet.
 	wp_enqueue_style( 'twentyfourteen-ie', get_template_directory_uri() . '/css/ie.css', array( 'twentyfourteen-style', 'genericons' ), '20131205' );
 	wp_style_add_data( 'twentyfourteen-ie', 'conditional', 'lt IE 9' );
-
-	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-		wp_enqueue_script( 'comment-reply' );
-	}
 	if ( is_active_sidebar( 'sidebar-3' ) ) {
 		wp_enqueue_script( 'jquery-masonry' );
 	}
@@ -573,31 +569,33 @@ function josed_meta_tags() {
 		$perma = get_permalink();
 		
 		/** inline twentyfourteen-keyboard-image-navigation.js for image attachments. */
-		if ( is_singular() && wp_attachment_is_image() ) {
+		if ( wp_attachment_is_image() ) {
 			?><script>( function( $ ) {$( document ).on( 'keydown.twentyfourteen', function( e ) {var url = false;if ( e.which === 37 ) {url = $( '.previous-image a' ).attr( 'href' );} else if ( e.which === 39 ) {url = $( '.entry-attachment a' ).attr( 'href' );}if ( url && ( !$( 'textarea, input' ).is( ':focus' ) ) ) {window.location = url;}} );} )( jQuery );</script><?php
+		}
+		
+		if ( comments_open() && get_option( 'thread_comments' ) ) {
+			?><script>var addComment={moveForm:function(a,b,c,d){var e,f=this,g=f.I(a),h=f.I(c),i=f.I("cancel-comment-reply-link"),j=f.I("comment_parent"),k=f.I("comment_post_ID");if(g&&h&&i&&j){f.respondId=c,d=d||!1,f.I("wp-temp-form-div")||(e=document.createElement("div"),e.id="wp-temp-form-div",e.style.display="none",h.parentNode.insertBefore(e,h)),g.parentNode.insertBefore(h,g.nextSibling),k&&d&&(k.value=d),j.value=b,i.style.display="",i.onclick=function(){var a=addComment,b=a.I("wp-temp-form-div"),c=a.I(a.respondId);if(b&&c)return a.I("comment_parent").value="0",b.parentNode.insertBefore(c,b),b.parentNode.removeChild(b),this.style.display="none",this.onclick=null,!1};try{f.I("comment").focus()}catch(l){}return!1}},I:function(a){return document.getElementById(a)}};</script><?php
+			
 		}
 	}
 	
-	if (is_singular() || is_front_page() ) { ?>
-	
-		<meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?>" />
+	if (is_singular() || is_front_page() ) { 
+		?><meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?>" />
 		<meta property="og:url" content="<?php echo $perma; ?>" />
 		<meta property="og:site_name" content="Jose D. Castillo, born skater" />
 		<meta property="og:type" content="<?php echo $ogtype; ?>" />
 		<meta property="fb:admins" content="isabel.8991" />
 		<?php		
 		if ( $img_uri) { ?>
-			<meta property="og:image" content="<?php echo $img_uri; ?>"/>
-		<?php }
+			<meta property="og:image" content="<?php echo $img_uri; ?>"/><?php 
+		}
 	}
 	
 	if( !empty($des) ) {
 		?><meta name="description" content="<?php echo $des;?>" /><?php 
 	}
 	if( !empty($keys) ) {
-	?>
-		<meta name="keywords" content="<?php echo $keys;?>" />
-	<?php 
+		?><meta name="keywords" content="<?php echo $keys;?>" /><?php 
 	}
 	// Tell searchbots to not index pages 2+ of paged archives. Improves ranking.
 	if ( $paged >= 2 ) {echo '<meta name="robots" content="noindex, follow, noarchive" />';}
