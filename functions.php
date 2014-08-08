@@ -481,7 +481,7 @@ add_filter('wp_get_attachment_image_attributes','josed_add_img_title', 10, 2);
 function jose_remove_jquery_migrate( &$scripts) {
     if(!is_admin()) {
         $scripts->remove( 'jquery');
-        $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.0' );
+        $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.1' );
     }
 }
 add_filter( 'wp_default_scripts', 'jose_remove_jquery_migrate' );
