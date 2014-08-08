@@ -470,11 +470,11 @@ if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow
 	require get_template_directory() . '/inc/featured-content.php';
 }
 /* add title attr to image attachments */
-function josed_add_img_title($attr) {
-	$attr['title'] = the_title_attribute('echo=0');
+function josed_add_img_title($attr, $attachment = null) {
+	$attr['title'] = trim(strip_tags($attachment->post_title));
 	return $attr;
 }
-add_filter('wp_get_attachment_image_attributes','josed_add_img_title');
+add_filter('wp_get_attachment_image_attributes','josed_add_img_title', 10, 2);
 /**
 * Dequeue jQuery migrate script in WordPress.
 */
@@ -568,3 +568,4 @@ function josed_meta_tags() {
 	if ( $paged >= 2 ) {echo '<meta name="robots" content="noindex, follow, noarchive" />';}
 }
 add_action('wp_head', 'josed_meta_tags');
+// @todo move custom functions out to plugin!
