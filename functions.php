@@ -493,7 +493,7 @@ add_filter( 'wp_default_scripts', 'jose_remove_jquery_migrate' );
 */
 function jose_remove_cssjs_ver( $src ) {
 	if( strpos( $src, '?ver=' ) ) {
-		$src = remove_query_arg( 'ver', $src );
+		$src = esc_url( remove_query_arg( 'ver', $src ) );
 	}
 	return $src;
 }
