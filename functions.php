@@ -215,11 +215,6 @@ function twentyfourteen_scripts() {
 		) );
 	}
 	wp_enqueue_script( 'twentyfourteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20140319', true );
-	/* Dequeue TubePress CSS and .js on all pages except the 1 video page. */
-	if ( ! is_page('videos') ){
-		wp_dequeue_style('tubepress');
-		wp_dequeue_script('tubepress');
-	}
 }
 add_action( 'wp_enqueue_scripts', 'twentyfourteen_scripts' );
 
@@ -484,11 +479,7 @@ add_filter('wp_get_attachment_image_attributes','josed_add_img_title', 10, 2);
 function jose_remove_jquery_migrate( &$scripts) {
     if(!is_admin()) {
         $scripts->remove( 'jquery');
-<<<<<<< HEAD
         $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.2' );
-=======
-        $scripts->add( 'jquery', false, array( 'jquery-core' ), '1.11.1' );
->>>>>>> f317584ee62306c3257665f9d910b67ade1a97e1
     }
 }
 add_filter( 'wp_default_scripts', 'jose_remove_jquery_migrate' );
