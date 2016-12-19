@@ -49,8 +49,8 @@ function twentyfourteen_setup() {
 
 	// This theme uses wp_nav_menu() in two locations.
 	register_nav_menus( array(
-		'primary'   => __( 'Top primary menu', 'twentyfourteen' ),
-		'secondary' => __( 'Secondary menu in left sidebar', 'twentyfourteen' ),
+		'primary'   => 'Top primary menu',
+		'secondary' => 'Secondary menu in left sidebar',
 	) );
 
 	/*
@@ -137,27 +137,27 @@ function twentyfourteen_widgets_init() {
 	register_widget( 'Twenty_Fourteen_Ephemera_Widget' );
 
 	register_sidebar( array(
-		'name'          => __( 'Primary Sidebar', 'twentyfourteen' ),
+		'name'          => 'Primary Sidebar',
 		'id'            => 'sidebar-1',
-		'description'   => __( 'Main sidebar that appears on the left.', 'twentyfourteen' ),
+		'description'   => 'Main sidebar that appears on the left.',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',
 		'after_title'   => '</h1>',
 	) );
 	register_sidebar( array(
-		'name'          => __( 'Content Sidebar', 'twentyfourteen' ),
+		'name'          => 'Content Sidebar',
 		'id'            => 'sidebar-2',
-		'description'   => __( 'Additional sidebar that appears on the right.', 'twentyfourteen' ),
+		'description'   => 'Additional sidebar that appears on the right.',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',
 		'after_title'   => '</h1>',
 	) );
 	register_sidebar( array(
-		'name'          => __( 'Footer Widget Area', 'twentyfourteen' ),
+		'name'          => 'Footer Widget Area',
 		'id'            => 'sidebar-3',
-		'description'   => __( 'Appears in the footer section of the site.', 'twentyfourteen' ),
+		'description'   => 'Appears in the footer section of the site.',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',
@@ -210,8 +210,8 @@ function twentyfourteen_scripts() {
 	if ( is_front_page() && 'slider' == get_theme_mod( 'featured_content_layout' ) ) {
 		wp_enqueue_script( 'twentyfourteen-slider', get_template_directory_uri() . '/js/slider.js', array( 'jquery' ), '20131205', true );
 		wp_localize_script( 'twentyfourteen-slider', 'featuredSliderDefaults', array(
-			'prevText' => __( 'Previous', 'twentyfourteen' ),
-			'nextText' => __( 'Next', 'twentyfourteen' )
+			'prevText' => 'Previous', 'twentyfourteen',
+			'nextText' => 'Next', 'twentyfourteen'
 		) );
 	}
 	wp_enqueue_script( 'twentyfourteen-script', get_template_directory_uri() . '/js/functions.js', array( 'jquery' ), '20140319', true );
@@ -442,7 +442,7 @@ function twentyfourteen_wp_title( $title, $sep ) {
 
 	// Add a page number if necessary.
 	if ( $paged >= 2 || $page >= 2 ) {
-		$title = "$title $sep " . sprintf( __( 'Page %s', 'twentyfourteen' ), max( $paged, $page ) );
+		$title = "$title $sep " . sprintf( 'Page %s', max( $paged, $page ) );
 	}
 
 	return $title;
@@ -502,7 +502,7 @@ function josed_meta_tags() {
 	$des = '';
 	$img_uri = '';
 	if ( $paged >= 2 || $page >= 2 )
-		$des .= sprintf( __('Page %s - ', 'crucible'), max( $paged, $page ) );
+		$des .= sprintf( 'Page %s - ', max( $paged, $page ) );
 
 	if ( is_category() )
 		$des .= strip_tags(category_description());
