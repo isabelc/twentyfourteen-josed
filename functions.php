@@ -501,9 +501,6 @@ function josed_meta_tags() {
 	global $paged, $page;
 	$des = '';
 	$img_uri = '';
-	$ogtype = 'article';
-	$perma = site_url();
-	
 	if ( $paged >= 2 || $page >= 2 )
 		$des .= sprintf( __('Page %s - ', 'crucible'), max( $paged, $page ) );
 
@@ -516,7 +513,6 @@ function josed_meta_tags() {
 	if (is_front_page()) {
 		$des .= 'Jose D. Castillo is a Miami-born skater of New Skool Skate Team. This is his official Skateboarding blog documenting his skate life.';
 		$keys = 'Jose Castillo, skater, young skater, skateboarding, skate, Miami skater, skateboarder';
-		$ogtype = 'athlete';
 	}
 
 	// if singular get the excerpt and image
@@ -528,13 +524,6 @@ function josed_meta_tags() {
 		}
 		$description = trim( wp_strip_all_tags( $description, true ) );
 		$des .= substr( $description, 0, 150 );
-		$img_uri = wp_get_attachment_url();
-		if(has_post_thumbnail($post_id)){
-			$thumbnail_src = wp_get_attachment_image_src( get_post_thumbnail_id( $post_id ), 'full' );
-			$img_uri = esc_attr( $thumbnail_src[0] );
-		}
-		$perma = get_permalink();
-		
 		/** inline twentyfourteen-keyboard-image-navigation.js for image attachments. */
 		if ( wp_attachment_is_image() ) {
 			?><script>( function( $ ) {$( document ).on( 'keydown.twentyfourteen', function( e ) {var url = false;if ( e.which === 37 ) {url = $( '.previous-image a' ).attr( 'href' );} else if ( e.which === 39 ) {url = $( '.entry-attachment a' ).attr( 'href' );}if ( url && ( !$( 'textarea, input' ).is( ':focus' ) ) ) {window.location = url;}} );} )( jQuery );</script><?php
@@ -544,18 +533,6 @@ function josed_meta_tags() {
 			?><script>var addComment={moveForm:function(a,b,c,d){var e,f=this,g=f.I(a),h=f.I(c),i=f.I("cancel-comment-reply-link"),j=f.I("comment_parent"),k=f.I("comment_post_ID");if(g&&h&&i&&j){f.respondId=c,d=d||!1,f.I("wp-temp-form-div")||(e=document.createElement("div"),e.id="wp-temp-form-div",e.style.display="none",h.parentNode.insertBefore(e,h)),g.parentNode.insertBefore(h,g.nextSibling),k&&d&&(k.value=d),j.value=b,i.style.display="",i.onclick=function(){var a=addComment,b=a.I("wp-temp-form-div"),c=a.I(a.respondId);if(b&&c)return a.I("comment_parent").value="0",b.parentNode.insertBefore(c,b),b.parentNode.removeChild(b),this.style.display="none",this.onclick=null,!1};try{f.I("comment").focus()}catch(l){}return!1}},I:function(a){return document.getElementById(a)}};</script><?php
 		}
 	}
-	if (is_singular() || is_front_page() ) { 
-		?><meta property="og:title" content="<?php wp_title( '|', true, 'right' ); ?>" />
-		<meta property="og:url" content="<?php echo $perma; ?>" />
-		<meta property="og:site_name" content="Jose D. Castillo, born skater" />
-		<meta property="og:type" content="<?php echo $ogtype; ?>" />
-		<meta property="fb:admins" content="isabel.8991" />
-		<?php		
-		if ( $img_uri) { ?>
-			<meta property="og:image" content="<?php echo $img_uri; ?>"/><?php 
-		}
-	}
-	
 	if( !empty($des) ) {
 		?><meta name="description" content="<?php echo $des;?>" /><?php 
 	}
